@@ -1,0 +1,291 @@
+:root {
+    --bg-color: #f5f5f0;
+    --text-color: #333;
+    --card-bg: #fff;
+    --card-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    --verse-bg: #fffef5;
+    --verse-border: #5a452e;
+    --heading-color: #5a452e;
+    --secondary-text: #666;
+    --error-color: #a33;
+    /* Added accent and border colors for timer section */
+    --accent-color: #73553c;
+    --border-color: #e0dbd5;
+}
+
+.dark-mode {
+    --bg-color: #1a1a1a;
+    --text-color: #e0e0e0;
+    --card-bg: #2a2a2a;
+    --card-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    --verse-bg: #353535;
+    --verse-border: #8a7a6d;
+    --heading-color: #c0a080;
+    --secondary-text: #aaa;
+    --error-color: #e55;
+    /* Added dark mode accent and border colors */
+    --accent-color: #c0a080;
+    --border-color: #555555;
+}
+
+body {
+    font-family: 'Georgia', serif; /* Font from index.html */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Removed justify-content: center to allow scrolling from top */
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Container styles from index.html */
+.app-container {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    position: relative; /* Needed for theme toggle positioning */
+    margin-bottom: 40px; /* Add space between sections */
+    height: 100vh; /* Added height */
+}
+
+.clock-container { /* Renamed from timer-card in time.html */
+    background-color: var(--card-bg);
+    border-radius: 10px; /* Style from index.html */
+    box-shadow: var(--card-shadow); /* Style from index.html */
+    padding: 40px;
+    margin-top: 20px; /* Reduced margin-top */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Styles for Bible Clock specific elements from index.html */
+.digital-time {
+    font-size: 72px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    font-family: 'Courier New', monospace;
+}
+
+.verse-text {
+    font-size: 20px;
+    line-height: 1.6;
+    text-align: left;
+    padding: 25px;
+    background-color: var(--verse-bg);
+    border-left: 4px solid var(--verse-border);
+    margin: 30px 0;
+    min-height: 150px;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.verse-reference {
+    font-size: 26px;
+    font-weight: bold;
+    margin-top: 15px;
+    color: var(--heading-color);
+    text-align: right;
+    font-style: italic;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.translation-info {
+    font-style: italic;
+    color: var(--secondary-text);
+    font-size: 16px;
+    margin-top: 20px;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-out {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Theme toggle from index.html */
+.theme-toggle {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--verse-border);
+    color: var(--text-color);
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; /* Use flexbox for centering */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    width: 40px;
+    height: 40px;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    opacity: 0.9;
+}
+
+.theme-icon {
+    /* Removed display: inline-block; */
+    width: 16px;
+    height: 16px;
+     /* Add display flex to the icon spans themselves */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sun-icon { display: none; }
+.dark-mode .moon-icon { display: none; }
+.dark-mode .sun-icon { display: inline-block; }
+
+/* Styles for Timer specific elements from time.html, adapted */
+.timer-container { /* New container for timer */
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    margin-bottom: 40px;
+    height: 100vh; /* Added height */
+}
+
+.timer-card { /* Using clock-container style */
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+    padding: 40px;
+    margin-top: 20px; /* Consistent margin */
+    width: 100%;
+    box-sizing: border-box;
+ }
+
+.timer-display {
+    font-size: 4rem; /* Kept timer font size */
+    font-weight: normal;
+    margin: 20px 0;
+    letter-spacing: 2px;
+    color: var(--text-color); /* Use theme color */
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 20px 0;
+}
+
+button { /* General button style reverted for text buttons */
+    font-family: 'Georgia', serif; /* Consistent font */
+    background-color: var(--bg-color); /* Consistent bg */
+    color: var(--text-color); /* Consistent text color */
+    border: 1px solid var(--border-color); /* Use theme border color */
+    border-radius: 6px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+     /* Removed flex and size properties from general button rule */
+}
+
+ /* Specific styles for icon buttons within controls */
+ .controls button {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 50px; /* Adjust size as needed */
+     height: 50px; /* Adjust size as needed */
+     padding: 0; /* Remove padding for icon buttons */
+ }
+
+button:hover {
+    background-color: var(--accent-color); /* Use theme accent */
+    color: white; /* Keep white text on hover */
+    border-color: var(--accent-color); /* Match border */
+}
+
+ /* Style for hidden icons */
+ .bi-hidden {
+     display: none;
+ }
+
+
+.presets {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.preset-btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+     width: auto; /* Override fixed width for preset buttons */
+    height: auto; /* Override fixed height for preset buttons */
+}
+
+.custom-time {
+    margin-top: 30px;
+}
+
+.custom-time h3 {
+    color: var(--heading-color); /* Use heading color from index.html */
+    font-weight: normal;
+    margin-bottom: 15px;
+    font-size: 1.5rem; /* Added size */
+}
+
+.time-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.time-inputs input {
+    width: 60px;
+    padding: 8px;
+    border: 1px solid var(--border-color); /* Use theme border */
+    border-radius: 4px;
+    background-color: var(--card-bg); /* Use theme card bg */
+    color: var(--text-color); /* Use theme text color */
+    font-family: 'Georgia', serif; /* Consistent font */
+    text-align: center;
+}
+
+.time-inputs label {
+    display: block;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    color: var(--secondary-text); /* Use theme secondary text */
+    opacity: 1; /* Removed opacity */
+}
+
+.sound-toggle {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Responsive styles from index.html */
+@media (max-width: 600px) {
+    .clock-container, .timer-card { /* Apply to both cards */
+        padding: 25px;
+    }
+    .digital-time { font-size: 54px; }
+    .verse-text { font-size: 18px; padding: 20px; }
+    .timer-display { font-size: 3rem; } /* Adjust timer display */
+    .theme-toggle { width: 35px; height: 35px; }
+     h1 { font-size: 2rem; } /* Adjust heading */
+     .custom-time h3 { font-size: 1.3rem; } /* Adjust subheading */
+}
