@@ -51,6 +51,11 @@ body {
     position: relative; /* Needed for theme toggle positioning */
     margin-bottom: 40px; /* Add space between sections */
     height: 100vh; /* Added height */
+    margin-left: auto; /* Center the container */
+    margin-right: auto; /* Center the container */
+    display: flex; /* Added Flexbox */
+    flex-direction: column; /* Stack children vertically */
+    justify-content: center; /* Center content vertically */
 }
 
 .clock-container { /* Renamed from timer-card in time.html */
@@ -58,7 +63,7 @@ body {
     border-radius: 10px; /* Style from index.html */
     box-shadow: var(--card-shadow); /* Style from index.html */
     padding: 40px;
-    margin-top: 20px; /* Reduced margin-top */
+    margin: 20px auto; /* Centering the clock container */
     width: 100%;
     box-sizing: border-box;
 }
@@ -136,10 +141,8 @@ body {
 }
 
 .theme-icon {
-    /* Removed display: inline-block; */
     width: 16px;
     height: 16px;
-     /* Add display flex to the icon spans themselves */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -151,19 +154,24 @@ body {
 
 /* Styles for Timer specific elements from time.html, adapted */
 .timer-container { /* New container for timer */
-    width: 100%;
+     width: 100%;
     max-width: 800px;
     text-align: center;
     margin-bottom: 40px;
-    height: 100vh; /* Added height */
+     height: 100vh; /* Added height */
+     margin-left: auto; /* Center the container */
+     margin-right: auto; /* Center the container */
+     display: flex; /* Added Flexbox */
+     flex-direction: column; /* Stack children vertically */
+     justify-content: center; /* Center content vertically */
 }
 
-.timer-card { /* Using clock-container style */
+ .timer-card { /* Using clock-container style */
     background-color: var(--card-bg);
     border-radius: 10px;
     box-shadow: var(--card-shadow);
     padding: 40px;
-    margin-top: 20px; /* Consistent margin */
+    margin: 20px auto; /* Centering the timer card */
     width: 100%;
     box-sizing: border-box;
  }
