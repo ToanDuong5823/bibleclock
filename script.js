@@ -16,11 +16,9 @@ async function loadBibleMapping() {
         if (Array.isArray(bibleData)) {
             return bibleData;
         } else {
-            console.error("Bible data is not in expected format");
             return [];
         }
     } catch (error) {
-        console.error("Error loading Bible mapping:", error);
         document.getElementById('verse-text').innerHTML = '<p style="color: var(--error-color);">Error loading Bible data. Please ensure bible.json is available.</p>';
         document.getElementById('verse-reference').textContent = '— Error';
         return [];
@@ -42,7 +40,6 @@ function getChapterFromHour(hour) {
 
 function findValidBooks(bibleData, hour, verse) {
     if (!bibleData || !Array.isArray(bibleData) || bibleData.length === 0) {
-        console.error("Bible data is empty or invalid");
         return [];
     }
     const validBooks = [];
@@ -68,18 +65,14 @@ function findValidBooks(bibleData, hour, verse) {
     try {
         const response = await fetch(proxyUrl);
         if (!response.ok) {
-            console.error(`Error fetching verse: ${response.statusText}`);
-            // Check if the response indicates a rate limit or server issue
             if (response.status === 429) {
                 console.warn('Rate limit likely exceeded for Bible API via proxy.');
-                // Optionally display a user-friendly message about temporary unavailability
             }
             return null;
         }
         const data = await response.json();
 
         if (!data.contents || data.contents.includes("Verse not found") || data.contents.includes("not found")) {
-            console.log(`Verse not found for ${reference}`);
             return null;
         }
 
@@ -89,7 +82,6 @@ function findValidBooks(bibleData, hour, verse) {
             if (parsedContents && parsedContents.text && parsedContents.reference) {
                 return parsedContents;
             } else {
-                console.error("Parsed Bible API response is missing expected fields:", parsedContents);
                 return null;
             }
         } catch (parseError) {
@@ -184,15 +176,11 @@ async function preloadNextVerse(bibleDataRef) {
     };
 
     if (nextMinutes === 0) {
-        console.log(`Preload skipped for ${String(nextHours).padStart(2, '0')}:00 (verse 0).`);
         return; // Don't preload for verse 0
     }
 
-    console.log(`Attempting to preload for ${String(nextHours).padStart(2, '0')}:${String(nextMinutes).padStart(2, '0')}...`);
-
      const validBooks = findValidBooks(bibleDataRef, nextHours, nextMinutes);
     if (!validBooks || validBooks.length === 0) {
-        console.log(`No valid books found for ${String(nextHours).padStart(2, '0')}:${String(nextMinutes).padStart(2, '0')}. Preload failed.`);
         // Preloaded data remains null, isPreloaded: false - displayVerse will handle this.
         return;
     }
@@ -204,14 +192,13 @@ async function preloadNextVerse(bibleDataRef) {
         const randomIndex = Math.floor(Math.random() * booksToTry.length);
         const book = booksToTry.splice(randomIndex, 1)[0]; // Pick and remove
 
-        console.log(`Trying to preload ${book} ${getChapterFromHour(nextHours)}:${nextMinutes}...`);
+
         try {
             const verseResult = await fetchBibleVerse(book, nextHours, nextMinutes);
             if (verseResult) {
                 window.preloadedVerseData.verseData = verseResult;
                 window.preloadedVerseData.isPreloaded = true;
                 verseFound = true; // Found a verse, exit loop
-                console.log(`Preloaded successfully: ${verseResult.reference}`);
             } else {
                 console.log(`Workspace failed for ${book} ${getChapterFromHour(nextHours)}:${nextMinutes}. Trying next book.`);
             }
@@ -258,11 +245,9 @@ async function displayVerse(bibleDataRef, hours, minutes) {
         verseTextElement.innerHTML = preloaded.text.trim();
         verseReferenceElement.textContent = `— ${preloaded.reference}`;
         translationInfoElement.textContent = preloaded.translation_name || 'KJV'; // Default to KJV if not present
-        console.log(`Displayed preloaded: ${preloaded.reference}`);
         window.preloadedVerseData.isPreloaded = false; // Reset preload flag
     } else {
         // Fetch a new verse if not preloaded or preload failed/mismatched
-        console.log(`Workspaceing verse for ${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}, preload miss/fail.`);
         verseTextElement.innerHTML = `<p class="loading">Finding verse for ${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}...</p>`;
         verseReferenceElement.textContent = '— Loading...';
         translationInfoElement.textContent = '';
